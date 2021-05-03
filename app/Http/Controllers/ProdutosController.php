@@ -5,8 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Produto;
 
+/**
+ * Classe Modelo Produtos
+ */
 class ProdutosController extends Controller
 {
+    /**
+     * Cria a view Produtos.
+     * @return View retorna view create Produtos;
+     */
     public function create()
     {
       return view('produtos.create');
