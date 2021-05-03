@@ -19,7 +19,7 @@ class CreateBolsasTable extends Migration
             $table->integer('porcentagem');
             $table->dateTime('validade');
             $table->integer('duracaoMes');
-            $table->text('observacoes');
+            $table->text('observacoes')->nullable();
             $table->timestamps();
         });
     }
