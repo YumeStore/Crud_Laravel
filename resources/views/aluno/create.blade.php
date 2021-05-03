@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Cadastrar um novo Aluno</title>
+    <link rel="stylesheet" href="../../css/app.css">
   </head>
   <body>
     <form action="{{ route('registrar_aluno') }}" method="POST">
