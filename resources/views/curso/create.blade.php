@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Cadastrar um novo produto</title>
+    <title>Cadastrar um novo Curso</title>
   </head>
   <body>
     <form action="{{ route('registrar_curso') }}" method="POST">

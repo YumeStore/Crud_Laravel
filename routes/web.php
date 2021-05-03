@@ -17,7 +17,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/produtos/novo', 'ProdutosController@create');
-Route::post('/produtos/novo', 'ProdutosController@store')->name('registrar_produto');
+//Route::get('/produtos/novo', 'ProdutosController@create');
+//Route::post('/produtos/novo', 'ProdutosController@store')->name('registrar_produto');
 Route::get('curso/', 'CursosController@create');
 Route::post('curso/', 'CursosController@store') ->name('registrar_curso');
+Route::get('aluno/', 'AlunosController@create');
+Route::post('aluno/', 'AlunosController@store') ->name('registrar_aluno');
