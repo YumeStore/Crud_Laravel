@@ -47,20 +47,23 @@
             </div>
 
             <div class="content p-1">
-                <form action="" method="GET">
-                    @csrf
                     <div id="aluno">
-                        <div class="row">
+                        <div class="form-group">
                             <div class="form-group">
                                 <label for="">Aluno:</label>
-                                <input class="form-control" type="text" name="idAluno" id="idAlunoFiltro">
-                                <button type="button" id="filtrarAluno" onclick="filtrarAlunoByName()" class="btn btn-info">Filtrar</button>
+                                <input class="form-control col-6" type="text" name="nomeAluno" id="idAlunoFiltro">
                             </div>
+                            <button type="button" id="filtrarAluno" onclick="filtrarAlunoByName()" class="btn btn-info">Filtrar</button>
                         </div>   
 
-                        
+                        <form>
                         <!-- Tabela de aluno cadastrados -->
-
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label for="">Aluno Id:</label>
+                                <input class="form-control col-6" type="text" name="idAluno">
+                            </div>
+                        </div>   
                         <div class="form-row">
                             <table class="table table-dark table-striped">
                                 <thead>
@@ -72,19 +75,8 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tabelaAlunos">
-                                      @php
-                                        foreach($usuarios as $usuario) {
-                                      @endphp 
-                                        <tr> 
-                                          <td scope="row">@php echo $usuario->id @endphp</td>
-                                          <td scope="row">@php echo $usuario->nome @endphp</td>
-                                          <td scope="row">@php echo $usuario->email @endphp</td>
-                                          <td scope="row"><button type="button" onclick="selecionarAluno(@php echo $usuario->id; @endphp)" class="btn btn-danger">Selecionar</button></td>
-                                        </tr>
-                                      @php
-                                        }
-                                      @endphp
-                            </tbody>
+                                      
+                                </tbody>
                         </table>
                     </div>
                     </div>
@@ -126,7 +118,7 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <button class="btn btn-primary" type="submit">
+                            <button class="btn btn-primary" type="button">
                                 Salvar</button>
                         </div>
                     </div>
@@ -134,6 +126,7 @@
             </form>
         </div>
         <script>
+
               var aluno = document.getElementById('aluno');
               var curso = document.getElementById('curso');
               var bolsa = document.getElementById('bolsa');
@@ -145,14 +138,32 @@
               curso.style.display = 'none';
               bolsa.style.display = 'none';     
               var listaAlunos = @php echo json_encode($usuarios); @endphp;
+           
+              function iniciarTabelaAlunos(){
+                for(let i = 0; i < listaAlunos.length; i++){
+                        tabelaAlunos.innerHTML += `<tr> 
+                                                    <td scope="row">${listaAlunos[i].id}</td>
+                                                    <td scope="row">${listaAlunos[i].nome}<td>
+                                                    <td scope="row">${listaAlunos[i].email}</td>
+                                                    <td scope="row"><button type="button" onclick="selecionarAluno(${listaAlunos[i].id})" class="btn btn-success">Selecionar</button></td>
+                                                    </tr>`                
+                }
+              }
+
+              window.onload = filtrarAlunoByName();  
+
+              idAlunoFiltro.addEventListener('keyup', function(e){
+                var key = e.which || e.keyCode;
+                if (key == 13) {
+                    e.preventDefault();
+                    filtrarAlunoId.click();
+                }
+              });
 
               function filtrarAlunoByName() {
-
                 var saida = listaAlunos.filter(entrada => {
                    return entrada.nome.toLowerCase().indexOf(idAlunoFiltro.value.toLowerCase()) > -1;
                 });
-
-                console.log(saida);
 
                 if(saida.length > 0){
                     tabelaAlunos.innerHTML = '';
@@ -161,7 +172,7 @@
                                                     <td scope="row">${saida[i].id}</td>
                                                     <td scope="row">${saida[i].nome}<td>
                                                     <td scope="row">${saida[i].email}</td>
-                                                    <td scope="row"><butto class="btn btn-danger">Selecionar</butto></td>
+                                                    <td scope="row"><butto class="btn btn-success">Selecionar</butto></td>
                                                 </tr>`
                     }
                 } else {
@@ -172,7 +183,7 @@
                                                     <td scope="row">${listaAlunos[i].id}</td>
                                                     <td scope="row">${listaAlunos[i].nome}<td>
                                                     <td scope="row">${listaAlunos[i].email}</td>
-                                                    <td scope="row"><button class="btn btn-danger">Selecionar</button></td>
+                                                    <td scope="row"><button class="btn btn-success">Selecionar</button></td>
                                                 </tr>`
                     }
                 };
@@ -188,17 +199,14 @@
 
               var avancarBolsa = () => {}
 
-              function selecionarAluno(){
+              function selecionarAluno(id){
+                var saida = listaAlunos.filter(entrada => {
+                   return entrada.id == id;
+                });
+
+                console.log("Aluno Selecionado:", saida);
 
               }
-
-              /*
-              (3) [{…}, {…}, {…}]
-              0: {id: 1, nome: "pedro", email: "pedro@email", cpf: "344343", created_at: "2021-05-03 16:29:44", …}
-              1: {id: 2, nome: "Paulo", email: "paulo@email.com", cpf: "589488545", created_at: "2021-05-03 19:24:03", …}
-              2: {id: 3, nome: "Murillo", email: "murillo@email.com", cpf: "43287432", created_at: "2021-05-03 19:24:18", …}
-              length: 3
-              */
       </script>
     </body>
 </html>
