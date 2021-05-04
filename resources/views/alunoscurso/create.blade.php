@@ -9,24 +9,8 @@
 
     <body>
     @php use Illuminate\Support\Facades\DB;
-
-$usuarios = DB::table('alunos') -> get();
-
-$nome_aluno = filter_input(INPUT_GET, 'idAluno', FILTER_SANITIZE_STRING);
-
-if (!empty($nome_aluno)) {
-    $enconder_tabela = true;
-
-    // realiza a consulta
-    $buscas = DB::table('alunos')->where('nome', $nome_aluno)->get();
-
-    foreach($buscas as $busca){
-     echo $busca->nome;
-    }
-}
-
-
-@endphp 
+    $usuarios = DB::table('alunos') -> get();
+    @endphp 
         <div class="container">
 
             <nav aria-label="breadcrumb" id="alunoEscolha">
@@ -70,55 +54,12 @@ if (!empty($nome_aluno)) {
                             <div class="form-group">
                                 <label for="">Aluno:</label>
                                 <input class="form-control" type="text" name="idAluno" id="idAlunoFiltro">
-                                <button type="button" id="filtrarAluno" onclick="filtrarAluno()" class="btn btn-info">Filtrar</button>
+                                <button type="button" id="filtrarAluno" onclick="filtrarAlunoByName()" class="btn btn-info">Filtrar</button>
                             </div>
                         </div>   
 
-                        <!-- Tabela de resultados  -->
-                        @php
-                        $nome_aluno = filter_input(INPUT_GET, 'idAluno', FILTER_SANITIZE_STRING);
-                        if (!empty($nome_aluno)) { 
-                        $enconder_tabela = true;
-                        $buscas = DB::table('alunos')->where('nome', $nome_aluno)->get();
-                        if(!empty($buscas))
                         
-                        {
-                        @endphp
-                        <div class="form-row">
-                            <table class="table table-dark table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Id do Aluno</th>
-                                        <th scope="col">Nome</th>
-                                        <th scope="col">Email</th>
-                                        <th scope="col"></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tabelaAlunos">
-                                      @php
-                                        foreach($buscas as $busca) {
-                                      @endphp 
-                                        <tr> 
-                                          <td scope="row">@php echo $busca->id @endphp</td>
-                                          <td scope="row">@php echo $busca->nome @endphp<td>
-                                          <td scope="row">@php echo $busca->email @endphp</td>
-                                          <td scope="row">Selecionar</td>
-                                        </tr>
-                                      @php
-                                }
-                                @endphp
-                            </tbody>
-                        </table>
-                        @php
-                        }
-                        }
-                        @endphp
-
                         <!-- Tabela de aluno cadastrados -->
-                        @php
-                        if(empty($buscas))
-                        {
-                        @endphp
 
                         <div class="form-row">
                             <table class="table table-dark table-striped">
@@ -138,12 +79,11 @@ if (!empty($nome_aluno)) {
                                           <td scope="row">@php echo $usuario->id @endphp</td>
                                           <td scope="row">@php echo $usuario->nome @endphp</td>
                                           <td scope="row">@php echo $usuario->email @endphp</td>
-                                          <td scope="row">Selecionar</td>
+                                          <td scope="row"><button type="button" onclick="selecionarAluno(@php echo $usuario->id; @endphp)" class="btn btn-danger">Selecionar</button></td>
                                         </tr>
-                                @php
-                                      }
-                          }           
-                                @endphp
+                                      @php
+                                        }
+                                      @endphp
                             </tbody>
                         </table>
                     </div>
@@ -204,20 +144,38 @@ if (!empty($nome_aluno)) {
 
               curso.style.display = 'none';
               bolsa.style.display = 'none';     
+              var listaAlunos = @php echo json_encode($usuarios); @endphp;
 
-              function filtrarAlunoById() {
-                var alunoList = @php echo json_encode($usuarios); @endphp;
+              function filtrarAlunoByName() {
 
-                alunoList.map(entrada => {
-                  if(entrada.id == idAlunoFiltro.value){
-                    tabelaAlunos.innerHTML = `<tr> 
-                                                <td scope="row">${entrada.id}</td>
-                                                <td scope="row">${entrada.nome}<td>
-                                                <td scope="row">${entrada.email}</td>
-                                                <td scope="row">Selecionar</td>
-                                              </tr>`
-                  }
+                var saida = listaAlunos.filter(entrada => {
+                   return entrada.nome.toLowerCase().indexOf(idAlunoFiltro.value.toLowerCase()) > -1;
                 });
+
+                console.log(saida);
+
+                if(saida.length > 0){
+                    tabelaAlunos.innerHTML = '';
+                    for(let i = 0; i < saida.length; i++){
+                        tabelaAlunos.innerHTML += `<tr> 
+                                                    <td scope="row">${saida[i].id}</td>
+                                                    <td scope="row">${saida[i].nome}<td>
+                                                    <td scope="row">${saida[i].email}</td>
+                                                    <td scope="row"><butto class="btn btn-danger">Selecionar</butto></td>
+                                                </tr>`
+                    }
+                } else {
+                    alert('Nenhum Registro Encontrado!');
+                    tabelaAlunos.innerHTML = '';
+                    for(let i = 0; i < listaAlunos.length; i++){
+                        tabelaAlunos.innerHTML += `<tr> 
+                                                    <td scope="row">${listaAlunos[i].id}</td>
+                                                    <td scope="row">${listaAlunos[i].nome}<td>
+                                                    <td scope="row">${listaAlunos[i].email}</td>
+                                                    <td scope="row"><button class="btn btn-danger">Selecionar</button></td>
+                                                </tr>`
+                    }
+                };
               }
 
               function esconderTabela() {
@@ -229,6 +187,10 @@ if (!empty($nome_aluno)) {
               }
 
               var avancarBolsa = () => {}
+
+              function selecionarAluno(){
+
+              }
 
               /*
               (3) [{…}, {…}, {…}]
