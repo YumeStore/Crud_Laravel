@@ -6,15 +6,34 @@
     <link rel="stylesheet" href="../../css/app.css">
   </head>
   <body>
-    <form action="{{ route('registrar_aluno') }}" method="POST">
+    <div class="content p-1">
+      <div class="list-group-item">
+        <div class=" d-flex">
+            <div class="mr-auto p2">
+              <h2 class="display-4 titulo">Cadastrar Aluno</h2>
+            </div>    
+        </div>
+        <form class="" action="{{ route('registrar_aluno') }}" method="POST">
         @csrf
-        <label for="">Nome</label>
-        <input type="text" name="nome"> <br>
-        <label for="">email</label>
-        <input type="text" name="email"> <br>
-        <label for="">cpf</label>
-        <input type="text" name="cpf"> <br>
-        <button> Salvar</button>
-    </form>
+        <div class="form-row">
+          <div class="form-group  col-md-7">
+            <label for="">Nome</label>
+            <input type="text" name="nome" class="form-control">
+          </div>
+          <div class="form-group  col-md-5">  
+            <label for="">email</label>
+            <input type="text" name="email" class="form-control"> 
+          </div>
+          <div class="form-group  col-md-5">  
+            <label for="">cpf</label>
+            <input type="text" name="cpf" class="form-control">
+          </div>   
+           
+        </div>
+        <input type="submit" class=" btn btn-primary">
+      </div>
+      
+    </div>    
+
   </body>
 </html>
