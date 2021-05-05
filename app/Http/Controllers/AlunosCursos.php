@@ -14,11 +14,10 @@ class AlunosCursos extends Controller
     public function store(Request $request)
     {
       AlunosCurso::create([
-        'nome' => $request->nome,
-        'porcentagem' =>$request->porcentagem,
-        'validade' =>$request->validade,
-        'duracaoMes' =>$request->duracaoMes,
-        'observacoes' =>$request->observacoes
+        'idAluno' => $request->idAluno,
+        'idCurso' =>$request->idCurso,
+        'turno' =>$request->turno,
+        'idBolsa' =>$request->idBolsa,
       ]);
 
       return "Bolsa cadastrada com sucesso!";

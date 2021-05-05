@@ -18,14 +18,14 @@
                     <div class="progress-bar bg-success" id="progress" role="progressbar" style="width: 0%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>  
-            <form>
+            
                 <!-- Bloco do Aluno -->
                 <div id="escolhaAluno">
                     <div id="aluno">
                         <div class="form-group">
                             <div class="form-group">
                                 <label for="">Aluno:</label>
-                                <input class="form-control col-6" type="text" name="nomeAluno" id="idAlunoFiltro">
+                                <input class="form-control col-6" type="text" name="nomeAluno" id="filtrarNomeAluno">
                             </div>
                             <button type="button" id="filtrarAluno" onclick="filtrarAlunoByName()" class="btn btn-info">Filtrar</button>
                         </div>   
@@ -55,7 +55,7 @@
                     <div class="form-group">
                         <div class="form-group">
                             <label>Curso:</label>
-                            <input class="form-control col-6" type="text" name="nomeCurso" id="idCursoFiltro">
+                            <input class="form-control col-6" type="text" name="nomeCurso" id="filtrarNomeCurso">
                         </div>
                         <button type="button" id="filtrarCurso" onclick="filtrarCursoByName()" class="btn btn-info">Filtrar</button>
                     </div>   
@@ -73,7 +73,7 @@
                                 </tr>
                             </thead>
                             <tbody id="tabelaCursos">
-                                        <!-- Conteudo da tabela que sera apresentado pelo JavaScript -->
+                                <!-- Conteudo da tabela que sera apresentado pelo JavaScript -->
                             </tbody>
                         </table>
                     </div>
@@ -81,12 +81,15 @@
                         <button type="button" id="avançarCheckOut()" class="btn btn-info">Avançar</button>
                     </div>
                 </div>
+            <form action="{{ route('registrar_alunos_cursos') }}" method="POST">
+            @csrf
                 <div id="checkOut">
-                    <div class="form-group">
-                        <label for="">Aluno</label>
+                    <div class="form-group my-2">
+                        <h2 for="">Aluno</h2>
+                        <hr>
                         <div class="form-group">
                             <label for="">Id</label>
-                            <input class="form-control col-6" type="text" name="idAluno">
+                            <input class="form-control col-6" type="text" name="idAluno" id="idAluno">
                         </div>
                         <div class="form-group">
                             <label for="">Nome</label>
@@ -101,8 +104,9 @@
                             <input class="form-control col-6" type="text" id="cpf">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="">Curso</label>
+                    <div class="form-group my-2">
+                        <h2 for="">Curso</h2>
+                        <hr>
                         <div class="form-group">
                             <label for="">Id</label>
                             <input class="form-control col-6" type="text" name="idCurso" id="idCurso">
@@ -120,20 +124,24 @@
                             <input class="form-control col-6" type="text" id="imagem">
                         </div>
                     </div>  
-                    <button type="submit">Submeter</button> 
+                    <button type="submit" class="btn btn-success">Submeter</button> 
                 </div>
-
             </form>
         <script>
               var aluno = document.getElementById('aluno');
               var curso = document.getElementById('curso');
               var bolsa = document.getElementById('bolsa');
+              
               var progressbar = document.getElementById('progress');
-              var idAlunoFiltro = document.getElementById('idAlunoFiltro');
+              var idAlunoFiltro = document.getElementById('filtrarNomeAluno');
+              var idCursoFiltro = document.getElementById('filtrarNomeCurso');
               var tabelaAlunos = document.getElementById('tabelaAlunos');
+              
               var filtrarAlunoId = document.getElementById('filtrarAluno');
+              var filtrarCursoId = document.getElementById('filtrarCurso');
 
               var alunosCursos = new Object();
+              
               var listaCursos = @php echo json_encode($cursos); @endphp;
               var listaAlunos = @php echo json_encode($usuarios); @endphp;
               
@@ -158,6 +166,44 @@
                     filtrarAlunoId.click();
                 }
               });
+
+              idCursoFiltro.addEventListener('keyup', function(e){
+                var key = e.which || e.keyCode;
+                if (key == 13) {
+                    e.preventDefault();
+                    filtrarCursoId.click();
+                }
+              });
+
+              function filtrarCursoByName() {
+                var saida = listaCursos.filter(entrada => {
+                   return entrada.nome.toLowerCase().indexOf(idCursoFiltro.value.toLowerCase()) > -1;
+                });
+                tabelaCursos.innerHTML = '';
+
+                if(saida.length > 0){
+                    for(let i = 0; i < saida.length; i++){
+                        tabelaCursos.innerHTML += `<tr> 
+                                                    <td scope="row">${saida[i].id}</td>
+                                                    <td scope="row">${saida[i].nome}<td>
+                                                    <td scope="row">${saida[i].imagem}</td>
+                                                    <td scope="row">${saida[i].conteudo}</td>
+                                                    <td scope="row"><button type="button" class="btn btn-success" onclick="selecionarCurso(${saida[i].id})">Selecionar</button></td>
+                                                </tr>`
+                    }
+                } else {
+                    alert('Nenhum Registro Encontrado!');
+                    for(let i = 0; i < listaAlunos.length; i++){
+                        tabelaCursos.innerHTML += `<tr> 
+                                                    <td scope="row">${listaCursos[i].id}</td>
+                                                    <td scope="row">${listaCursos[i].nome}<td>
+                                                    <td scope="row">${listaCursos[i].imagem}</td>
+                                                    <td scope="row">${listaCursos[i].conteudo}</td>
+                                                    <td scope="row"><button type="button" class="btn btn-success" onclick="selecionarCurso(${listaCursos[i].id})">Selecionar</button></td>
+                                                </tr>`
+                    }
+                };
+            }
 
               function filtrarAlunoByName() {
                 var saida = listaAlunos.filter(entrada => {
@@ -219,13 +265,6 @@
                 divCurso.style.display = 'none';
                 progressbar.style.width = '100%';
 
-                document.getElementById("idAluno").value = alunosCursos.idAluno;
-                document.getElementById("nomeAluno").value = alunosCursos.aluno.nome;
-                document.getElementById("email").value = alunosCursos.aluno.email;
-                document.getElementById("cpf").value = alunosCursos.aluno.cpf;
-                document.getElementById("idCurso").value = alunosCursos.idCurso;
-                document.getElementById("nomeCurso").value = alunosCursos.nome;
-                document.getElementById("conteudo").value = alunosCursos.conteudo;
               }
 
               function selecionarCurso(id){
@@ -239,16 +278,16 @@
                                                     <td scope="row">${listaCursos[i].conteudo}</td>
                                                     <td scope="row"><button type="button" onclick="selecionadoReverter()" class="btn btn-danger">Deselecionar</button></td>
                                                    </tr>` ;
-                                                                                   
-                        alunosCursos.idCurso = id;
-                        alunosCursos.curso.nome = listaCursos[i].nome;
-                        alunosCursos.curso.conteudo = listaCursos[i].conteudo;
-                        console.log("Objeto Aluno", alunosCursos);
+                                       
+                        document.getElementById("idCurso").value = id;
+                        document.getElementById("nomeCurso").value = listaCursos[i].nome;
+                        document.getElementById("conteudo").value = listaCursos[i].conteudo;
                         break;               
                     }
                 }
 
               }
+
               function selecionarAluno(id){
                 tabelaAlunos.innerHTML = '';
                 for(let i = 0; i < listaAlunos.length; i++){
@@ -260,12 +299,11 @@
                                                     <td scope="row">${listaAlunos[i].email}</td>
                                                     <td scope="row"><button type="button" onclick="selecionadoReverter()" class="btn btn-danger">Deselecionar</button></td>
                                                    </tr>` ;
-                                                                                   
-                        alunosCursos.idAluno = id;
-                        alunosCursos.aluno.nome = listaAlunos[i].nome;
-                        alunosCursos.aluno.email = listaAlunos[i].email;
-                        alunosCursos.aluno.cpf = listaAlunos[i].cpf;
-                        console.log("Objeto Aluno", alunosCursos);
+
+                        document.getElementById("idAluno").value = id;
+                        document.getElementById("nomeAluno").value = listaAlunos[i].nome;
+                        document.getElementById("email").value = listaAlunos[i].email;       
+                        document.getElementById("cpf").value = listaAlunos[i].cpf;
                         break;               
                     }
                 }

@@ -27,6 +27,7 @@ Route::get('bolsa/', 'BolsasController@create');
 Route::post('bolsa/', 'BolsasController@store') ->name('registrar_bolsa');
 Route::get('alunocurso/', 'AlunosCursos@create');
 Route::post('alunocurso/', 'AlunosCursos@store') ->name('registrar_alunos_cursos');
+Route::get('listarcurso/', 'listarCursos@create');
 
 
 

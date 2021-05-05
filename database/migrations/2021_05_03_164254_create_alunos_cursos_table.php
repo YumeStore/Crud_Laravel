@@ -15,10 +15,10 @@ class CreateAlunosCursosTable extends Migration
         Schema::create('alunos_cursos', function (Blueprint $table) {
             $table->integer('idAluno')->references('id')->on('alunos');
             $table->integer('idCurso')->references('id')->on('cursos');
-            $table->string('turno');
-            $table->integer('idBolsa')->references('id')->on('bolsas');;
-            $table->dateTime('dataInicio');
-            $table->dateTime('dataTermino');
+            $table->string('turno')->nullable();
+            $table->integer('idBolsa')->references('id')->on('bolsas')->nullable();
+            $table->dateTime('dataInicio')->nullable();;
+            $table->dateTime('dataTermino')->nullable();;
             $table->timestamps();
         });
     }
