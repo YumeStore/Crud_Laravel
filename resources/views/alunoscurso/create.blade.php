@@ -229,10 +229,10 @@
               }
 
               function selecionarCurso(id){
+                  console.log("funcao selecionar curso inciada");
                 tabelaCursos.innerHTML = '';
                 for(let i = 0; i < listaCursos.length; i++){
-                    if(tabelaCursos[i].id == id){
-                        
+                    if(listaCursos[i].id == id){
                         tabelaCursos.innerHTML += `<tr> 
                                                     <td scope="row">${listaCursos[i].id}</td>
                                                     <td scope="row">${listaCursos[i].nome}<td>
