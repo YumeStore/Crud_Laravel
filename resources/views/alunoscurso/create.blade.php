@@ -58,12 +58,6 @@
 
                         <form>
                         <!-- Tabela de aluno cadastrados -->
-                        <div class="form-group">
-                            <div class="form-group">
-                                <label for="">Aluno Id:</label>
-                                <input class="form-control col-6" type="text" name="idAluno">
-                            </div>
-                        </div>   
                         <div class="form-row">
                             <table class="table table-dark table-striped">
                                 <thead>
@@ -75,13 +69,16 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tabelaAlunos">
-                                      
+                                      <!-- Conteudo da tabela que sera apresentado pelo JavaScript -->
+                                      <!-- Conteudo da tabela que sera apresentado pelo JavaScript -->
+                                      <!-- Conteudo da tabela que sera apresentado pelo JavaScript -->
+                                      <!-- Conteudo da tabela que sera apresentado pelo JavaScript -->
                                 </tbody>
                         </table>
                     </div>
                     </div>
                     <div class="form-row">
-                        <button id="avancarCurso()" class="btn btn-sucess">Avançar</button>
+                        <button id="avancarCurso()" class="btn btn-info">Avançar</button>
                     </div>
                 </div>
                 <div id="curso">
@@ -125,6 +122,84 @@
                 </div>
             </form>
         </div>
+        <div id="curso">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label for="">Aluno:</label>
+                                <input class="form-control col-6" type="text" name="nomeAluno" id="idAlunoFiltro">
+                            </div>
+                            <button type="button" id="filtrarCurso" onclick="filtrarCursoByName()" class="btn btn-info">Filtrar</button>
+                        </div>   
+
+                        <form>
+                        <!-- Tabela de aluno cadastrados -->
+                        <div class="form-row">
+                            <table class="table table-dark table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Id do Aluno</th>
+                                        <th scope="col">Nome</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabelaAlunos">
+                                      <!-- Conteudo da tabela que sera apresentado pelo JavaScript -->
+                                      <!-- Conteudo da tabela que sera apresentado pelo JavaScript -->
+                                      <!-- Conteudo da tabela que sera apresentado pelo JavaScript -->
+                                      <!-- Conteudo da tabela que sera apresentado pelo JavaScript -->
+                                </tbody>
+                        </table>
+                    </div>
+                    </div>
+                    <div class="form-row">
+                        <button id="avancarCurso()" class="btn btn-info">Avançar</button>
+                    </div>
+                </div>
+                <div id="curso">
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="">Curso</label>
+                            <input class="form-control" type="text" name="idCurso">
+                            <br>
+                        </div>
+                        <button id="avancarBolsa()" class="btn btn-sucess">Avançar</button>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="">turno</label>
+                            <input class="form-control" type="text" name="turno">
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <div id="bolsa">
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="">id da Bolsa</label>
+                            <input class="form-control" type="text" name="idBolsa">
+                            <br>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="">dataTermino</label>
+                            <input class="form-control" type="text" name="observacoes">
+                            <br>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <button class="btn btn-primary" type="button">
+                                Salvar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+
         <script>
 
               var aluno = document.getElementById('aluno');
@@ -134,6 +209,8 @@
               var idAlunoFiltro = document.getElementById('idAlunoFiltro');
               var tabelaAlunos = document.getElementById('tabelaAlunos');
               var filtrarAlunoId = document.getElementById('filtrarAluno');
+
+              var alunosCursos = new Object();
 
               curso.style.display = 'none';
               bolsa.style.display = 'none';     
@@ -145,7 +222,7 @@
                                                     <td scope="row">${listaAlunos[i].id}</td>
                                                     <td scope="row">${listaAlunos[i].nome}<td>
                                                     <td scope="row">${listaAlunos[i].email}</td>
-                                                    <td scope="row"><button type="button" onclick="selecionarAluno(${listaAlunos[i].id})" class="btn btn-success">Selecionar</button></td>
+                                                    <td scope="row"><button type="button" class="btn btn-success" onclick="selecionarAluno(${listaAlunos[i].id})">Selecionar</button></td>
                                                     </tr>`                
                 }
               }
@@ -172,7 +249,7 @@
                                                     <td scope="row">${saida[i].id}</td>
                                                     <td scope="row">${saida[i].nome}<td>
                                                     <td scope="row">${saida[i].email}</td>
-                                                    <td scope="row"><butto class="btn btn-success">Selecionar</butto></td>
+                                                    <td scope="row"><button type="button" class="btn btn-success" onclick="selecionarAluno(${listaAlunos[i].id})">Selecionar</button></td>
                                                 </tr>`
                     }
                 } else {
@@ -183,7 +260,7 @@
                                                     <td scope="row">${listaAlunos[i].id}</td>
                                                     <td scope="row">${listaAlunos[i].nome}<td>
                                                     <td scope="row">${listaAlunos[i].email}</td>
-                                                    <td scope="row"><button class="btn btn-success">Selecionar</button></td>
+                                                    <td scope="row"><button type="button" class="btn btn-success" onclick="selecionarAluno(${listaAlunos[i].id})">Selecionar</button></td>
                                                 </tr>`
                     }
                 };
@@ -193,18 +270,33 @@
                   return tabelaAlunos.style.display = 'none';
               }
 
-              var avancarCurso = () => {
+              var avancarCurso   = () => {
                   progressbar.style.width = '33%';
               }
 
               var avancarBolsa = () => {}
 
               function selecionarAluno(id){
-                var saida = listaAlunos.filter(entrada => {
-                   return entrada.id == id;
-                });
+                tabelaAlunos.innerHTML = '';
+                for(let i = 0; i < listaAlunos.length; i++){
+                    if(listaAlunos[i].id == id){
+                        
+                        tabelaAlunos.innerHTML += `<tr> 
+                                                    <td scope="row">${listaAlunos[i].id}</td>
+                                                    <td scope="row">${listaAlunos[i].nome}<td>
+                                                    <td scope="row">${listaAlunos[i].email}</td>
+                                                    <td scope="row"><button type="button" onclick="selecionadoReverter()" class="btn btn-danger">Deselecionar</button></td>
+                                                   </tr>` ;
+                                                                                   
+                        alunosCursos.idAluno = id;
+                        console.log("Objeto Aluno", alunosCursos);
+                        break;               
+                    }
+                }
 
-                console.log("Aluno Selecionado:", saida);
+              }
+
+              function selecionadoReverter(){
 
               }
       </script>
