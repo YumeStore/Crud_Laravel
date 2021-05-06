@@ -13,45 +13,43 @@
     $cursos = DB::table('cursos') -> get();
     @endphp 
         <div class="container">
-            <div class="row py-4">
-                <div class="progress">
-                    <div class="progress-bar bg-success" id="progress" role="progressbar" style="width: 0%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-            </div>  
+            <div class="progress my-2">
+                <div class="progress-bar" id="progress" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
             
-                <!-- Bloco do Aluno -->
-                <div id="escolhaAluno">
-                    <div id="aluno">
+            <!-- Bloco do Aluno -->
+            <div id="escolhaAluno">
+                <div id="aluno">
+                    <div class="form-group">
                         <div class="form-group">
-                            <div class="form-group">
-                                <label for="">Aluno:</label>
-                                <input class="form-control col-6" type="text" name="nomeAluno" id="filtrarNomeAluno">
-                            </div>
-                            <button type="button" id="filtrarAluno" onclick="filtrarAlunoByName()" class="btn btn-info">Filtrar</button>
-                        </div>   
-                    </div>
-                    <!-- Tabela de aluno cadastrados -->
-                    <div class="form-row">
-                        <table class="table table-dark table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Id do Aluno</th>
-                                        <th scope="col">Nome</th>
-                                        <th scope="col">Email</th>
-                                        <th scope="col"></th>
-                                    </tr>
-                            </thead>
-                            <tbody id="tabelaAlunos">
-                                <!-- Conteudo da tabela que sera apresentado pelo JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="form-row">
-                        <button type="button" onclick="avancarCurso()" class="btn btn-info">Avançar para Curso</button>
-                    </div>
+                            <label for="">Aluno:</label>
+                            <input class="form-control col-6" type="text" name="nomeAluno" id="filtrarNomeAluno">
+                        </div>
+                        <button type="button" id="filtrarAluno" onclick="filtrarAlunoByName()" class="btn btn-info">Filtrar</button>
+                    </div>   
                 </div>
+                <!-- Tabela de aluno cadastrados -->
+                <div class="form-row">
+                    <table class="table table-dark table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Id do Aluno</th>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Email</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelaAlunos">
+                        <!-- Conteudo da tabela que sera apresentado pelo JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="form-row">
+                    <button type="button" onclick="avancarCurso()" class="btn btn-info">Avançar para Curso</button>
+                </div>
+            </div>
                 <!-- Bloco do Curso -->
-                <div id="escolhaCurso">
+                <div id="escolhaCurso" style="display: none;">
                     <div class="form-group">
                         <div class="form-group">
                             <label>Curso:</label>
@@ -78,50 +76,50 @@
                         </table>
                     </div>
                     <div class="form-row">
-                        <button type="button" id="avançarCheckOut()" class="btn btn-info">Avançar</button>
+                        <button type="button" onclick="avançarCheckOut()" class="btn btn-info">Avançar para Checkout</button>
                     </div>
                 </div>
             <form action="{{ route('registrar_alunos_cursos') }}" method="POST">
             @csrf
-                <div id="checkOut">
+                <div id="checkOut" style="display: none;">
                     <div class="form-group my-2">
-                        <h2 for="">Aluno</h2>
+                        <h2>Aluno</h2>
                         <hr>
                         <div class="form-group">
-                            <label for="">Id</label>
-                            <input class="form-control col-6" type="text" name="idAluno" id="idAluno">
+                            <label>Id</label>
+                            <input class="form-control col-6" type="text" name="idAluno" id="idAluno" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="">Nome</label>
-                            <input class="form-control col-6" type="text" id="nomeAluno">
+                            <label>Nome</label>
+                            <input class="form-control col-6" type="text" id="nomeAluno" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="">Email</label>
-                            <input class="form-control col-6" type="text" id="email">
+                            <label>Email</label>
+                            <input class="form-control col-6" type="text" id="email" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="">Cpf</label>
-                            <input class="form-control col-6" type="text" id="cpf">
+                            <label>Cpf</label>
+                            <input class="form-control col-6" type="text" id="cpf" readonly>
                         </div>
                     </div>
                     <div class="form-group my-2">
-                        <h2 for="">Curso</h2>
+                        <h2>Curso</h2>
                         <hr>
                         <div class="form-group">
-                            <label for="">Id</label>
-                            <input class="form-control col-6" type="text" name="idCurso" id="idCurso">
+                            <label>Id</label>
+                            <input class="form-control col-6" type="text" name="idCurso" id="idCurso" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="">Nome</label>
-                            <input class="form-control col-6" type="text" id="nomeCurso">
+                            <label>Nome</label>
+                            <input class="form-control col-6" type="text" id="nomeCurso" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="">Imagem</label>
-                            <input class="form-control col-6" type="text" id="conteudo">
+                            <label>Conteudo</label>
+                            <input class="form-control col-6" type="text" id="conteudo" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="">Conteudo</label>
-                            <input class="form-control col-6" type="text" id="imagem">
+                            <label>Imagem</label>
+                            <input class="form-control col-6" type="text" id="imagem" readonly>
                         </div>
                     </div>  
                     <button type="submit" class="btn btn-success">Submeter</button> 
@@ -258,11 +256,19 @@
                                                     </tr>` ;   
                     console.log(listaCursos);
                 }
+
+                var divCurso = document.getElementById("escolhaCurso");
+                divCurso.style.display = 'block';
               }
 
               function avançarCheckOut(){
+                  console.log("div checkout")
+                var divCheckout = document.getElementById("checkOut");
                 var divCurso = document.getElementById("escolhaCurso");
+
+                divCheckout.style.display = 'block';
                 divCurso.style.display = 'none';
+
                 progressbar.style.width = '100%';
 
               }

@@ -20,6 +20,6 @@ class AlunosCursos extends Controller
         'idBolsa' =>$request->idBolsa,
       ]);
 
-      return "Bolsa cadastrada com sucesso!";
+      return view('aluno.list');
     }
 }
