@@ -17,7 +17,7 @@
 
 ## Instalação:
 
-- Crie um banco de dados mysql como o nome "laravel"
+- Crie um banco de dados mysql com o nome "laravel"
 - Copie copie o arquivo .env-example e crie um novo arquivo chamado .env 
 - no terminal digite: composer install
 - npm install
