@@ -8,8 +8,10 @@ class ListarAlunos extends Controller
 {
     public function create()
     {
-      return view('alunos.list');
+      return view('aluno.list');
     }
     public function store(Request $request)
     {
+
+    }
 }

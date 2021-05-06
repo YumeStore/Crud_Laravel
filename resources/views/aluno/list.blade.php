@@ -9,7 +9,7 @@
 </head>
 <body>
 @php use Illuminate\Support\Facades\DB;
-    $usuarios = DB::table('alunos') -> get();
+    $alunos = DB::table('alunos') -> get();
 @endphp 
 <div class="container">
 <div id="listagemAlunos">
@@ -31,6 +31,7 @@
                                 <th scope="col">Nome</th>
                                 <th scope="col">Email</th>
                                 <th scope="col"></th>
+                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody id="tabelaAlunos">
@@ -39,7 +40,7 @@
                     </table>
                 </div>
                 <div class="form-row">
-                    <button type="button" onclick="avancarCurso()" class="btn btn-info">Avançar para Curso</button>
+                    <button type="button" onclick="novoAluno()" class="btn btn-info">Novo Aluno</button>
                 </div>
             </div>
     </div>
@@ -48,9 +49,8 @@
         var idAlunoFiltro = document.getElementById('filtrarNomeAluno');
         var tabelaAlunos = document.getElementById('tabelaAlunos');
               
-        var filtrarAlunoId = document.getElementById('filtrarAluno');
-              
-        var listaAlunos = @php echo json_encode($usuarios); @endphp;
+        var filtrarAlunoId = document.getElementById('filtrarAluno');            
+        var listaAlunos = @php echo json_encode($alunos); @endphp;
              
         idAlunoFiltro.addEventListener('keyup', function(e){
          var key = e.which || e.keyCode;
@@ -62,55 +62,42 @@
 
         function filtrarAlunoByName() {
             var saida = listaAlunos.filter(entrada => {
-                   return entrada.nome.toLowerCase().indexOf(idAlunoFiltro.value.toLowerCase()) > -1;
+                return entrada.nome.toLowerCase().indexOf(idAlunoFiltro.value.toLowerCase()) > -1;
             });
 
             if(saida.length > 0){
-                    preencherTabela(saida)
+                preencherTabela(saida)
             } else {
-                    alert('Nenhum Registro Encontrado!');
-                    preencherTabela(listaAlunos)
+                alert('Nenhum Registro Encontrado!');
+                preencherTabela(listaAlunos)
             };
-            }
-        function editarAluno(id){
-            tabelaAlunos.innerHTML = '';
-                for(let i = 0; i < listaAlunos.length; i++){
-                    if(listaAlunos[i].id == id){
-                        
-                        tabelaAlunos.innerHTML += `<tr> 
-                                                    <td scope="row">${listaAlunos[i].id}</td>
-                                                    <td scope="row">${listaAlunos[i].nome}<td>
-                                                    <td scope="row">${listaAlunos[i].email}</td>
-                                                    <td scope="row"><button type="button" onclick="selecionadoReverter()" class="btn btn-danger">Deselecionar</button></td>
-                                                   </tr>` ;
-
-                        document.getElementById("idAluno").value = id;
-                        document.getElementById("nomeAluno").value = listaAlunos[i].nome;
-                        document.getElementById("email").value = listaAlunos[i].email;       
-                        document.getElementById("cpf").value = listaAlunos[i].cpf;
-                        break;               
-                    }
-                }
-
         }
-        function excluirAluno(){
+        function editarAluno(id){
             
         }
 
-              function preencherTabela(listagem){
-                tabelaAlunos.innerHTML = '';
-                    for(let i = 0; i < saida.length; i++){
-                        tabelaAlunos.innerHTML += `<tr> 
-                                                    <td scope="row">${listagem[i].id}</td>
-                                                    <td scope="row">${listagem[i].nome}<td>
-                                                    <td scope="row">${listagem[i].email}</td>
-                                                    <td scope="row"><button type="button" class="btn btn-success" onclick="editarAluno(${listagem[i].id})">Editar</button></td>
-                                                    <td scope="row"><button type="button" class="btn btn-success" onclick="excluirAluno(${listagem[i].id})">Excluir</button></td>
-                                                </tr>`
-                    }
-              }
+        function excluirAluno(id){
 
-              iniciarTabelaAlunos();
+        }
+
+        function novoAluno(){
+            window.location.href=  '/aluno';
+        }
+
+        function preencherTabela(listagem){
+            tabelaAlunos.innerHTML = '';
+                for(let i = 0; i < listagem.length; i++){
+                    tabelaAlunos.innerHTML += `<tr> 
+                                                <td scope="row">${listagem[i].id}</td>
+                                                <td scope="row">${listagem[i].nome}<td>
+                                                <td scope="row">${listagem[i].email}</td>
+                                                <td scope="row"><button type="button" class="btn btn-success" onclick="editarAluno(${listagem[i].id})">Editar</button></td>
+                                                <td scope="row"><button type="button" class="btn btn-danger" onclick="excluirAluno(${listagem[i].id})">Excluir</button></td>
+                                            </tr>`;
+                }
+        }
+
+        filtrarAlunoByName();
     </script>
 </body>
 </html>
